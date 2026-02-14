@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day! 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #e74c3c;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+
+        .heart {
+            color: #e74c3c;
+            font-size: 4em;
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #555;
+            line-height: 1.8;
+            margin: 30px 0;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .love-note {
+            background: #ffe6e6;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #e74c3c;
+            font-style: italic;
+            color: #333;
+            animation: slideIn 1.5s ease-in-out;
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #e74c3c;
+            margin: 30px 0 20px 0;
+            font-weight: bold;
+        }
+
+        .button-container {
+            position: relative;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 20px 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+        }
+
+        .button.no-button {
+            background: linear-gradient(135deg, #a8a8a8 0%, #7f7f7f 100%);
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        .attempts-message {
+            font-size: 1.1em;
+            color: #e74c3c;
+            margin-top: 20px;
+            min-height: 30px;
+            font-weight: bold;
+        }
+
+        /* Modal/Popup Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.5s;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe6f0 100%);
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 900px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.5s;
+        }
+
+        .close {
+            color: #e74c3c;
+            float: right;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #c0392b;
+        }
+
+        .timeline-title {
+            font-size: 2.5em;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .timeline-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .timeline-item {
+            text-align: center;
+            margin: 20px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .timeline-photo {
+            width: 250px;
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto 15px;
+            border: 5px solid #e74c3c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .timeline-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fd79a8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .timeline-label {
+            font-size: 1.3em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-year {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .arrow {
+            font-size: 3em;
+            color: #e74c3c;
+            align-self: center;
+        }
+
+        .timeline-message {
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #555;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .middle-photo {
+            margin: 30px auto;
+        }
+
+        /* Floating hearts animation */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 2em;
+            color: rgba(231, 76, 60, 0.7);
+            animation: float 6s infinite ease-in-out;
+        }
+
+        /* Different sized hearts for variety */
+        .floating-heart.small {
+            font-size: 1.5em;
+            color: rgba(255, 105, 180, 0.6);
+        }
+
+        .floating-heart.medium {
+            font-size: 2.5em;
+            color: rgba(231, 76, 60, 0.5);
+        }
+
+        .floating-heart.large {
+            font-size: 3em;
+            color: rgba(219, 10, 91, 0.4);
+        }
+
+        /* Additional heart styles */
+        .floating-heart.pink {
+            color: rgba(255, 192, 203, 0.7);
+        }
+
+        .floating-heart.red {
+            color: rgba(220, 20, 60, 0.6);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10%, 30% { transform: scale(1.1); }
+            20%, 40% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Alternative floating animation for variety */
+        @keyframes floatSway {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(50vh) translateX(50px) rotate(180deg);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(-30px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-heart.sway {
+            animation: floatSway 7s infinite ease-in-out;
+        }
+
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 5px solid #e74c3c;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fd79a8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .message { font-size: 1.1em; }
+            .container { padding: 20px; }
+            .modal-content { 
+                padding: 20px; 
+                margin: 10% 10px;
+            }
+            .timeline-title { font-size: 1.8em; }
+            .timeline-container { flex-direction: column; }
+            .arrow { 
+                transform: rotate(90deg); 
+                margin: 20px 0;
+            }
+            .timeline-photo {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="heartsContainer"></div>
+    
+    <div class="container">
+        <div class="heart">❤️</div>
+        <h1>Happy Valentine's Day!</h1>
+        
+        <!-- MAIN PHOTO: Replace "images/current-photo.jpg" with your photo path -->
+        <div class="photo-frame">
+            <img src="images/current-photo.jpg" alt="Us">
+        </div>
+
+        <div class="message">
+            To the most amazing person in my life,<br>
+            <strong>You make every day feel like Valentine's Day! 💕</strong>
+        </div>
+
+        <div class="love-note">
+            "Every moment with you is a treasure. You bring light to my darkest days,
+            joy to my heart, and love to my soul. Thank you for being you,
+            and thank you for choosing me. I love you more than words can say."
+        </div>
+
+        <div class="question">
+            Will you continue to be my Valentine forever? 💍
+        </div>
+
+        <div class="button-container">
+            <button class="button" onclick="showTimeline()">Yes! ❤️</button>
+            <button class="button no-button" id="noButton" 
+                    onmouseover="moveButton()" 
+                    onclick="moveButton()"
+                    style="left: 50%; transform: translateX(-50%); top: 80px;">
+                No 😢
+            </button>
+        </div>
+
+        <div class="attempts-message" id="attemptsMessage"></div>
+
+        <div style="margin-top: 30px;">
+            <small style="color: #999;">With all my love, always and forever 💝</small>
+        </div>
+    </div>
+
+    <!-- Modal/Popup -->
+    <div id="timelineModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            
+            <h2 class="timeline-title">Our Beautiful Journey Together 💕</h2>
+            
+            <div class="timeline-container">
+                <!-- PHOTO 1: Starting photo -->
+                <div class="timeline-item">
+                    <div class="timeline-label">Where We Started</div>
+                    <div class="timeline-photo">
+                        <img src="images/photo1-start.jpg" alt="Our Beginning">
+                    </div>
+                    <div class="timeline-year">2016</div>
+                </div>
+
+                <div class="arrow">→</div>
+
+                <!-- PHOTO 2: Current photo -->
+                <div class="timeline-item">
+                    <div class="timeline-label">Where We Are</div>
+                    <div class="timeline-photo">
+                        <img src="images/photo2-now.jpg" alt="Us Today">
+                    </div>
+                    <div class="timeline-year">2026</div>
+                </div>
+            </div>
+
+            <!-- PHOTO 3: Special memory -->
+            <div class="timeline-item middle-photo">
+                <div class="timeline-label">A Special Moment 💫</div>
+                <div class="timeline-photo">
+                    <img src="images/photo3-special.jpg" alt="Special Memory">
+                </div>
+                <div class="timeline-year">Our Favorite Memory</div>
+            </div>
+
+            <div class="timeline-message">
+                <strong>10 Years of Love, Laughter, and Adventure! 🎉</strong><br><br>
+                
+                From our first smile to today, every moment has been magical. 
+                We've grown together, laughed together, and built a life filled with love.
+                <br><br>
+                
+                Through every season, every challenge, and every joy - you've been my constant, 
+                my home, my everything. These 10 years are just the beginning of our forever.
+                <br><br>
+                
+                Here's to the countless memories we've made and the infinite ones still to come.
+                I love you more with each passing day. ❤️
+                <br><br>
+                
+                <em>Thank you for saying "Yes" to forever with me.</em>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let attempts = 0;
+        const messages = [
+            "Are you sure? 🥺",
+            "Really? Try again! 💔",
+            "Please? The button is running away! 🏃",
+            "Come on, you know you want to say yes! 😊",
+            "The button is getting tired of running! 😅",
+            "I'll keep running until you say yes! 💕",
+            "You can't catch me! 😜",
+            "Just say yes already! ❤️",
+            "I believe in you! Click YES! 🌟",
+            "The YES button is waiting for you! 💝"
+        ];
+
+        // Heart emoji variations for more variety
+        const heartEmojis = ['❤️', '💕', '💖', '💗', '💓', '💝', '💘', '💞'];
+
+        // Create floating hearts with variety
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            
+            // Random heart emoji
+            heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            
+            // Random size class
+            const sizes = ['small', 'medium', 'large', ''];
+            const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+            if (randomSize) heart.classList.add(randomSize);
+            
+            // Random color class
+            const colors = ['pink', 'red', ''];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            if (randomColor) heart.classList.add(randomColor);
+            
+            // Random animation style
+            if (Math.random() > 0.5) {
+                heart.classList.add('sway');
+            }
+            
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = (Math.random() * 4 + 5) + 's';
+            
+            document.getElementById('heartsContainer').appendChild(heart);
+
+            setTimeout(() => heart.remove(), 12000);
+        }
+
+        // Generate MORE hearts periodically (increased frequency)
+        setInterval(createHeart, 300); // Changed from 800 to 300ms - more hearts!
+        
+        // Initial burst of hearts (increased from 5 to 20)
+        for(let i = 0; i < 20; i++) {
+            setTimeout(createHeart, i * 100);
+        }
+
+        // Add extra hearts every 3 seconds
+        setInterval(() => {
+            for(let i = 0; i < 5; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }, 3000);
+
+        // Move the No button
+        function moveButton() {
+            const button = document.getElementById('noButton');
+            const container = button.parentElement;
+            
+            // Get container dimensions
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = button.getBoundingClientRect();
+            
+            // Calculate max positions (keeping button inside container)
+            const maxX = containerRect.width - buttonRect.width;
+            const maxY = containerRect.height - buttonRect.height;
+            
+            // Generate random position
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            // Apply new position
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+            button.style.transform = 'none';
+            
+            // Update attempts and message
+            attempts++;
+            const messageElement = document.getElementById('attemptsMessage');
+            const messageIndex = Math.min(attempts - 1, messages.length - 1);
+            messageElement.textContent = messages[messageIndex];
+            
+            // Add extra hearts when they try to click No
+            for(let i = 0; i < 5; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+            
+            // Add a little shake animation
+            button.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                button.style.animation = '';
+            }, 500);
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Show timeline modal
+        function showTimeline() {
+            document.getElementById('timelineModal').style.display = 'block';
+            document.getElementById('attemptsMessage').textContent = "I knew you'd say YES! 🎉💕";
+            
+            // Add MASSIVE celebration hearts!
+            for(let i = 0; i < 50; i++) {
+                setTimeout(createHeart, i * 30);
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('timelineModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('timelineModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
